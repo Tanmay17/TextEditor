@@ -20,7 +20,7 @@ public class DocumentBenchmarking {
 	    int trials = 100;
 
 	    // The text to test on
-	    String textfile = "data/warAndPeace.txt";
+	    String textfile = "E:\\Personal\\Java Project\\TextEditor\\data\\warAndPeace.txt";
 		
 	    // The amount of characters to increment each step
 	    // You can play around with this
@@ -37,6 +37,7 @@ public class DocumentBenchmarking {
 		// TODO: Fill in the rest of this method so that it runs two loops
 		// and prints out timing results as described in the assignment 
 		// instructions and following the pseudocode below.
+                System.out.println("NumberOfChars"+"\t"+"BasicTime"+"\t"+"EfficientTime");
 		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
 				numToCheck += increment)
 		{
@@ -58,7 +59,18 @@ public class DocumentBenchmarking {
 			 * 6. Print out the time it took to complete the loop in step 5 
 			 *      (on the same line as the first print statement) followed by a newline (\n) 
 			 */  
-			 
+                    String getFileString = getStringFromFile(textfile, numToCheck);
+                    EfficientDocument efficientDocument = new EfficientDocument(getFileString);
+                    long startTimeED = System.nanoTime();
+                    efficientDocument.getFleschScore();
+                    long endTimeED = System.nanoTime();
+                    long totalTimeED = (endTimeED - startTimeED); 
+                    BasicDocument basicDocument = new BasicDocument(getFileString);
+                    long startTimeBD = System.nanoTime();
+                    basicDocument.getFleschScore();
+                    long endTimeBD = System.nanoTime();
+                    long totalTimeBD = (endTimeBD - startTimeBD);
+                    System.out.println(numToCheck+"\t"+totalTimeBD+"\t"+totalTimeED); 
 		}
 	
 	}

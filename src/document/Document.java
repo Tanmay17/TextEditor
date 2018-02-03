@@ -129,10 +129,8 @@ public abstract class Document {
 	
 	public double getFleschScore()
 	{
-            BasicDocument basicDocument = new BasicDocument(text);
-            double words = basicDocument.getNumWords(),sentences = basicDocument.getNumSentences(),syllables = basicDocument.getNumSyllables();
-            System.out.println(syllables+" "+words+" "+sentences);
-	    double fleschScore = 206.835 - 1.015*(words/sentences)-84.6*(syllables/words);
-	    return fleschScore;
+            double words = getNumWords(),sentences = getNumSentences(),syllables = getNumSyllables();
+	    return 206.835 - (1.015 * (words/sentences) 
+				- (84.6 * (syllables/words)));
 	}
 }
