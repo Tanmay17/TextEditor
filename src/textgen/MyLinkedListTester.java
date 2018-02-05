@@ -123,7 +123,19 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
+                int size=list1.size();
+		list1.add(340);
+		assertEquals("Size of list:", size+1, list1.size());
+		int num=list1.get(list1.size()-1);
+		System.out.println(num);
+		assertEquals("Last Value:", 340, num );
+		try{
+			list1.add(null);
+			fail("Test fail");
+		}
+		catch(NullPointerException e){
+			
+		}
 		
 	}
 
@@ -132,7 +144,9 @@ public class MyLinkedListTester {
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
+                assertEquals("Zero Size:", 0, emptyList.size());
+		emptyList.add(1);
+		assertEquals("Size one", 1, emptyList.size());
 	}
 
 	
@@ -144,7 +158,37 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
-        // TODO: implement this test
+        
+                int n=list1.get(1);
+                int size=list1.size();
+                list1.add(1, 52);
+                int n1=list1.get(1);
+        
+                assertEquals("element",52,n1);
+                assertEquals("element",n,(int)list1.get(2));
+                assertEquals("element",size+1,list1.size());
+        
+                try{
+			list1.add(1,null);
+			fail("test failed");
+		}
+		catch(NullPointerException e){
+			
+		}
+                try{
+			list1.add(-1,45);
+			fail("test failed");
+		}
+		catch(IndexOutOfBoundsException e){
+			
+		}
+                try{
+			list1.add(50,45);
+			fail("test failed");
+		}
+		catch(IndexOutOfBoundsException e){
+                }	
+		
 		
 	}
 	
@@ -152,8 +196,34 @@ public class MyLinkedListTester {
 	@Test
 	public void testSet()
 	{
+	    int size=longerList.size();
+		int n1=longerList.get(3);
+		int n=longerList.set(2,23);
+		assertEquals("Element",size, longerList.size());
+		assertEquals("Element",23,(int)longerList.get(2));
+		assertEquals("Element",n1,(int)longerList.get(3));
 	    // TODO: implement this test
-	    
+		 try{
+				list1.set(1,null);
+				fail("test failed");
+			}
+			catch(NullPointerException e){
+				
+			}
+	        try{
+				list1.set(-1,45);
+				fail("test failed");
+			}
+			catch(IndexOutOfBoundsException e){
+				
+			}
+	        try{
+				list1.set(50,45);
+				fail("test failed");
+			}
+			catch(IndexOutOfBoundsException e){
+				
+			}
 	}
 	
 	
