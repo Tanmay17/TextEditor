@@ -1,14 +1,17 @@
 package spelling;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 /** 
  * An trie data structure that implements the Dictionary and the AutoComplete ADT
- * @author You
+ * @author tanmay
  *
  */
 public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
@@ -40,7 +43,31 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+            word = word.toLowerCase();
+            TrieNode spare = root;
+            int i=0;
+            for(i=0;i<word.length();i++){
+                if(spare.getChild(word.charAt(i))!= null){
+                    spare = spare.getChild(word.charAt(i));
+                    continue;
+                }
+                break;
+            }
+            if(i == word.length()){
+			if(spare.endsWord()){
+				return false;
+			}
+			size++;
+			spare.setEndsWord(true);
+			return true;
+		}
+		for(;i<word.length();i++){
+			spare.insert(word.charAt(i));
+			spare = spare.getChild(word.charAt(i));
+		}
+		spare.setEndsWord(true);
+		size++;
+	    return true;
 	}
 	
 	/** 
@@ -50,7 +77,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+	    return size;
 	}
 	
 	
@@ -60,7 +87,15 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+            String word = s.toLowerCase();
+            TrieNode node = root;
+            for(int i=0;i<word.length();i++){
+                if(node.getChild(word.charAt(i))!=null){
+                    node = node.getChild(word.charAt(i));
+                }
+                return false;
+            }
+        return node.endsWord();
 	}
 
 	/** 
@@ -100,9 +135,46 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       If it is a word, add it to the completions list
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
+    	  prefix=prefix.toLowerCase();
+    	 List<String> completions=new ArrayList<>();
+    	 TrieNode node=root;
+    	 for(int i=0;i<prefix.length();i++){
+    		 if(node.getChild(prefix.charAt(i))!=null){
+    			 node=node.getChild(prefix.charAt(i));
+    			 continue;
+    		 }
+    		 return completions;
+    	 }
     	 
-         return null;
+    	 LinkedList<TrieNode> queue=new LinkedList<>();
+    	 queue.add(node);
+    	 BFStraversal(queue,completions,numCompletions);
+    	 Collections.sort(completions,new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				// TODO Auto-generated method stub
+				return o1.length()-o2.length();
+			}
+		});
+    	 
+         return completions;
      }
+
+ 	private void BFStraversal(LinkedList<TrieNode> queue, List<String> completions,int numCompletions) {
+		while(!queue.isEmpty() && completions.size()<numCompletions){
+			TrieNode node=queue.removeFirst();
+			if(node.endsWord()){
+				completions.add(node.getText());
+			}
+			Set<Character> nextChars=node.getValidNextCharacters();
+			for(char c : nextChars){
+				queue.add(node.getChild(c));
+			}
+		}
+ 		
+		
+	}
 
  	// For debugging
  	public void printTree()

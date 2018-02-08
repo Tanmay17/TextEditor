@@ -4,7 +4,7 @@
 package spelling;
 
 /**
- * @author Christine
+ * @author tanmay
  *
  */
 public interface Dictionary {
